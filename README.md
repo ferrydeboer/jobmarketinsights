@@ -7,6 +7,9 @@ opportunities and trends in the (freelance) jobmarket for myself.
 I have been using 
 [this guide](https://sourcery.ai/blog/python-best-practices/) to setup the 
 project.
+* Make sure you have pipx and pipenv installed as documented in the article.
+* Run `pipenv install`
+* Run `pipenv run pre-commit install`
 
 ### Adding packages
 * Adding new (development) packages will always give a ResolutionFailure 
