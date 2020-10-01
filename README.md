@@ -10,6 +10,7 @@ project.
 * Make sure you have pipx and pipenv installed as documented in the article.
 * Run `pipenv install`
 * Run `pipenv run pre-commit install`
+* To run the api: `pipenv run uvicorn jomai.main:app`
 
 ### Adding packages
 * Adding new (development) packages will always give a ResolutionFailure 
