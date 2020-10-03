@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+    api:
+      build: .
+      networks:
+        - jomai-net
+      volumes:
+        - ./jomai:/usr/local/src/jomai
+        - web-data:/uploads
+      depends_on:
+        - db
+      ports:
+        - "8080"
+      environment:
+        DB_HOST: jomai-db
+        DB_USER: jomai
+        DB_PASSWORD: N0n3ofUr8usiness!
+        DB_NAME: jomai
+
+    jomai-db:
+      image: postgres:13.0-alpine
+      networks:
+        - jomai-net
+      volumes:
+        - db-data:/var/lib/postgresql/data
+      environment:
+        POSTGRESS_PASSWORD: N0n3ofUr8usiness!
+
+networks:
+  jomai-net:
+    driver: bridge
+
+volumes:
+  web-data:
+  db-data:
