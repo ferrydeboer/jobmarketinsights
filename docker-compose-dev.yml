@@ -2,11 +2,12 @@ version: "3.8"
 
 services:
     api:
-      build: .
+      build:
+        context: ./backend/api
       networks:
         - jomai-net
       volumes:
-        - ./jomai:/usr/local/src/api/jomai
+        - ./backend/api/jomai:/usr/local/src/api/jomai
         - web-data:/uploads
       depends_on:
         - db
