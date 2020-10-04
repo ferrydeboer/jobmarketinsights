@@ -10,7 +10,8 @@ project.
 * Make sure you have pipx and pipenv installed as documented in the article.
 * Run `pipenv install`
 * Run `pipenv run pre-commit install`
-* To run the api: `pipenv run uvicorn jomai.main:app`
+* To run the suite in development: `docker-compose -f docker-compose-dev.yml up`
+* Access api on http://127.0.0.1:8000
 
 ### Adding packages
 * Adding new (development) packages will always give a ResolutionFailure 

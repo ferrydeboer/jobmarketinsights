@@ -6,26 +6,26 @@ services:
       networks:
         - jomai-net
       volumes:
-        - ./jomai:/usr/local/src/jomai
+        - ./jomai:/usr/local/src/api/jomai
         - web-data:/uploads
       depends_on:
         - db
       ports:
-        - "8080"
+        - "8000:8000"
       environment:
-        DB_HOST: jomai-db
+        DB_HOST: db
         DB_USER: jomai
-        DB_PASSWORD: N0n3ofUr8usiness!
+        DB_PASSWORD: secret
         DB_NAME: jomai
 
-    jomai-db:
+    db:
       image: postgres:13.0-alpine
       networks:
         - jomai-net
       volumes:
         - db-data:/var/lib/postgresql/data
       environment:
-        POSTGRESS_PASSWORD: N0n3ofUr8usiness!
+        POSTGRES_PASSWORD: N0n3ofUr8usiness!
 
 networks:
   jomai-net:

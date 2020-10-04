@@ -18,5 +18,5 @@ RUN pipenv install --system --deploy
 
 EXPOSE 8000
 
-#CMD ["sh"]
-ENTRYPOINT ["uvicorn", "jomai.main:app"]
+#CMD ["sh", "-c", "tail -f /dev/null"]
+ENTRYPOINT ["uvicorn", "jomai.main:app", "--host", "0.0.0.0", "--port", "8000"]
