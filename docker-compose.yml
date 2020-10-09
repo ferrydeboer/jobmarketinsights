@@ -16,7 +16,7 @@ services:
       environment:
         DB_HOST: db
         DB_USER: jomai
-        DB_PASSWORD: secret
+        DB_PASSWORD: N0n3ofUr8usiness!
         DB_NAME: jomai
 
     db:
@@ -26,6 +26,8 @@ services:
       volumes:
         - db-data:/var/lib/postgresql/data
       environment:
+        POSTGRES_DB: jomai
+        POSTGRES_USER: jomai
         POSTGRES_PASSWORD: N0n3ofUr8usiness!
 
 networks:

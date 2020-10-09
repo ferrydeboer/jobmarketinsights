@@ -10,10 +10,15 @@ project.
 * Make sure you have pipx and pipenv installed as documented in the article.
 * Run `pipenv install`
 * Run `pipenv run pre-commit install`
-* To run the suite in development: `docker-compose -f docker-compose-dev.yml up`
+* To run the suite in development: `docker-compose up`
 * Access api on http://127.0.0.1:8000
 
 ### Adding packages
 * Adding new (development) packages will always give a ResolutionFailure 
 because of black being a pre-release package. Running `pipenv lock --pre`
 will create a proper lock file.
+
+### Adding migrations
+When you have made changes to the models. Then add a migrations using the 
+docker container. Easiest way is to run 
+`docker-compose run api alembic revision --autogenerate -m "[Short title]"`

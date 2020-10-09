@@ -7,12 +7,12 @@ RUN pip install pipenv
 
 ENV PROJECT_DIR /usr/local/src/api
 
-WORKDIR ${PROJECT_DIR}
-
-# Not neeeded in development.
+# Not needed in development.
 # COPY jomai ${PROJECT_DIR}/jomai
 COPY Pipfile* ${PROJECT_DIR}/
 COPY setup.cfg ${PROJECT_DIR}
+
+WORKDIR ${PROJECT_DIR}
 
 RUN pipenv install --system --deploy
 
