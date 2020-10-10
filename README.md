@@ -8,8 +8,11 @@ I have been using
 [this guide](https://sourcery.ai/blog/python-best-practices/) to setup the 
 project.
 * Make sure you have pipx and pipenv installed as documented in the article.
-* Run `pipenv install`
-* Run `pipenv run pre-commit install`
+* Go to `backend/api/`
+* Run `pipenv install --dev`
+* Run `pipenv shell` and use git from there so the pre-sommit hooks work properly
+
+### Running the project
 * To run the suite in development: `docker-compose up`
 * Access api on http://127.0.0.1:8000
 
