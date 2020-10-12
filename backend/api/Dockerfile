@@ -14,9 +14,12 @@ COPY setup.cfg ${PROJECT_DIR}
 
 WORKDIR ${PROJECT_DIR}
 
-RUN pipenv install --system --deploy
+# Allow installing dev dependencies to run tests
+ARG DEBUG=false
+RUN bash -c "if [ $DEBUG == 'true' ] ; then pipenv install --system --dev ; else pipenv install --system --deploy; fi"
 
 EXPOSE 8000
 
-#CMD ["sh", "-c", "tail -f /dev/null"]
-ENTRYPOINT ["uvicorn", "jomai.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "tail -f /dev/null"]
+#ENTRYPOINT ["uvicorn", "jomai.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+#CMD ["python", "main.py"]

@@ -5,29 +5,30 @@ repos:
         name: isort
         stages: [commit]
         language: system
-        entry:  (cd backend/api;pipenv run isort)
+        entry: bash -c '(cd backend/api;pipenv run isort)'
         types: [python]
 
       - id: flake8
         name: flake8
         stages: [commit]
         language: system
-        entry: (cd backend/api;pipenv run flake8)
+        entry: bash -c '(cd backend/api;pipenv run flake8)'
         types: [python]
         exclude: setup.py|env.py
+        pass_filenames: false
 
       - id: black
         name: black
         stages: [commit]
         language: system
-        entry: (cd backend/api;pipenv run black)
+        entry: bash -c '(cd backend/api;pipenv run black)'
         types: [python]
 
       - id: mypy
         name: mypy
         stages: [commit]
         language: system
-        entry: (cd backend/api;pipenv run mypy)
+        entry: bash -c '(cd backend/api;pipenv run mypy)'
         types: [python]
         pass_filenames: true
 
@@ -35,7 +36,7 @@ repos:
         name: pytest
         stages: [commit]
         language: system
-        entry: (cd backend/api;pipenv run pytest)
+        entry: bash -c '(cd backend/api;pipenv run pytest)'
         types: [python]
         verbose: true
         pass_filenames: false

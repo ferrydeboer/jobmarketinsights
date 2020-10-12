@@ -130,3 +130,4 @@ dmypy.json
 
 # Development environment(s)
 .idea
+.db

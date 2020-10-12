@@ -1,20 +1,14 @@
-from typing import Dict, Optional
+from typing import Dict
 
 import uvicorn
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from fastapi import FastAPI, HTTPException, Path, Depends
 
-
-class Job(BaseModel):
-    title: str = Field(
-        title="The title of the job description", description="Need I say more?"
-    )
-    url: str
-
+from jomai.crud.repository import Repository
+from jomai.models import Job
+from jomai.schemas import job as job_schemas
 
 app = FastAPI()
 jobs: Dict = {}
-# {1: Job(title="Tester", url="https://www.testers.jobs/123")}
 
 
 @app.get("/")
@@ -22,31 +16,37 @@ async def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/jobs/{job_id}", response_model=Job)
-async def read_job(job_id: int, q: Optional[str] = None):
-    if job_id not in jobs.keys():
+@app.get("/jobs/{job_id}", response_model=job_schemas.Job)
+async def read_job(job_id: int,
+                   repo: Repository = Depends(Repository)):
+    job = repo.get_job(job_id)
+    if not job:
         raise HTTPException(status_code=404, detail="Job does not exist")
-    return jobs[job_id]
+    return job
 
 
-@app.post("/jobs")
-def add_job(job: Job):
+@app.post("/jobs", response_model=job_schemas.Job, status_code=201)
+def add_job(
+        job: job_schemas.JobCreate,
+        repo: Repository = Depends(Repository)):
     """Add a new jobs and returns id"""
 
-    ids = jobs.keys()
-    job_id = 1
-    if ids:
-        job_id = max(ids) + 1
-
-    jobs[job_id] = job
-    return job_id
+    new_job = Job(**job.dict())
+    return repo.add_job(new_job)
 
 
 @app.put("/jobs/{job_id")
-def update_job(job_id: int, job: Job):
+def update_job(
+        job: job_schemas.Job,
+        job_id: int = Path(
+            ...,
+            title="The id of the job",
+            description="Some more information",
+            ge=1)):
     """Updates the jobs with given job_id"""
     return {"job_name": job.title, "job_id": job_id}
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    print("STARTING UVICORN THROUGH main.py")
+    uvicorn.run("jomai.main:app", host="0.0.0.0", port=8000, reload=True)

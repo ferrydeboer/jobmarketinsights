@@ -4,6 +4,8 @@ services:
     api:
       build:
         context: ./backend/api
+        args:
+          DEBUG: 'false'
       networks:
         - jomai-net
       volumes:
