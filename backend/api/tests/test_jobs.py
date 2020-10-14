@@ -4,7 +4,7 @@ from unittest import TestCase
 from fastapi.testclient import TestClient
 
 from jomai.schemas.job import JobCreate, Job
-from .core_mocks import config_mock  # noqa F401
+from .overrides import *  # noqa F401
 from jomai.main import app
 
 

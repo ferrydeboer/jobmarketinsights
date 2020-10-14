@@ -2,8 +2,10 @@ from typing import Dict
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, Path, Depends
+from sqlalchemy.orm import Session
 
 from jomai.crud.repository import Repository
+from jomai.db.session import get_session
 from jomai.models import Job
 from jomai.schemas import job as job_schemas
 
@@ -18,8 +20,8 @@ async def read_root():
 
 @app.get("/jobs/{job_id}", response_model=job_schemas.Job)
 async def read_job(job_id: int,
-                   repo: Repository = Depends(Repository)):
-    job = repo.get_job(job_id)
+                   session: Session = Depends(get_session)):
+    job = Repository.get_job(job_id, session)
     if not job:
         raise HTTPException(status_code=404, detail="Job does not exist")
     return job
@@ -28,11 +30,13 @@ async def read_job(job_id: int,
 @app.post("/jobs", response_model=job_schemas.Job, status_code=201)
 def add_job(
         job: job_schemas.JobCreate,
-        repo: Repository = Depends(Repository)):
+        session: Session = Depends(get_session)):
     """Add a new jobs and returns id"""
 
     new_job = Job(**job.dict())
-    return repo.add_job(new_job)
+    # I far from like passing down dependencies manually and creating unnecessary coupling.
+    # I can make repo functions static
+    return Repository.add_job(new_job, session)
 
 
 @app.put("/jobs/{job_id")
