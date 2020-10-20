@@ -1,6 +1,18 @@
 version: "3.8"
 
 services:
+    app:
+      build:
+        context: ./frontend/app
+      networks:
+        - jomai-net
+      volumes:
+        - ./frontend/app/src:/usr/local/src/app/src
+      ports:
+        - "4200:4200"
+      environment:
+        - ENABLE_POLLING=${ENABLE_POLLING}
+
     api:
       build:
         context: ./backend/api
