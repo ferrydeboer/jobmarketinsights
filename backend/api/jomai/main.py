@@ -1,7 +1,6 @@
-from typing import Dict
-
 import uvicorn
 from fastapi import FastAPI, HTTPException, Path, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from jomai.crud.repository import Repository
@@ -10,7 +9,14 @@ from jomai.models import Job
 from jomai.schemas import job as job_schemas
 
 app = FastAPI()
-jobs: Dict = {}
+
+origins = ["http://0.0.0.0:4200"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 
 @app.get("/")
