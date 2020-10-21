@@ -20,6 +20,6 @@ RUN bash -c "if [ $DEBUG == 'true' ] ; then pipenv install --system --dev ; else
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "tail -f /dev/null"]
+#CMD ["sh", "-c", "tail -f /dev/null"]
 #ENTRYPOINT ["uvicorn", "jomai.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 #CMD ["python", "jomai/main.py"]

@@ -32,6 +32,7 @@ services:
         DB_USER: jomai
         DB_PASSWORD: N0n3ofUr8usiness!
         DB_NAME: jomai
+      command: "uvicorn jomai.main:app --host 0.0.0.0 --port 8000 --reload"
 
     db:
       image: postgres:13.0-alpine

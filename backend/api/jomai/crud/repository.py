@@ -26,3 +26,7 @@ class Repository:
         # inspection.
         session.refresh(job)
         return job
+
+    @staticmethod
+    def get_jobs(session: Session):
+        return session.query(Job).all()

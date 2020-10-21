@@ -24,6 +24,12 @@ async def read_root():
     return {"Hello": "World"}
 
 
+@app.get("/jobs", response_model=job_schemas.JobsList)
+async def get_jobs(session: Session = Depends(get_session)):
+    jobs = Repository.get_jobs(session)
+    return jobs
+
+
 @app.get("/jobs/{job_id}", response_model=job_schemas.Job)
 async def read_job(job_id: int,
                    session: Session = Depends(get_session)):
@@ -40,8 +46,8 @@ def add_job(
     """Add a new jobs and returns id"""
 
     new_job = Job(**job.dict())
-    # I far from like passing down dependencies manually and creating unnecessary coupling.
-    # I can make repo functions static
+    # I far from like passing down dependencies manually and creating
+    # unnecessary coupling.
     return Repository.add_job(new_job, session)
 
 

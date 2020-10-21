@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 from pydantic import BaseModel
 
@@ -19,3 +20,9 @@ class Job(JobBase):
 
     class Config:
         orm_mode = True
+
+
+# got this from here
+# https://stackoverflow.com/questions/58068001/python-pydantic-using-a-list-with-json-objects
+class JobsList(BaseModel):
+    __root__: List[Job]
