@@ -1,12 +1,8 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException, Path, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 
-from jomai.crud.repository import Repository
-from jomai.db.session import get_session
-from jomai.models import Job
-from jomai.schemas import job as job_schemas
+from jomai.api import routes
 
 app = FastAPI()
 
@@ -23,45 +19,7 @@ app.add_middleware(
 async def read_root():
     return {"Hello": "World"}
 
-
-@app.get("/jobs", response_model=job_schemas.JobsList)
-async def get_jobs(session: Session = Depends(get_session)):
-    jobs = Repository.get_jobs(session)
-    return jobs
-
-
-@app.get("/jobs/{job_id}", response_model=job_schemas.Job)
-async def read_job(job_id: int,
-                   session: Session = Depends(get_session)):
-    job = Repository.get_job(job_id, session)
-    if not job:
-        raise HTTPException(status_code=404, detail="Job does not exist")
-    return job
-
-
-@app.post("/jobs", response_model=job_schemas.Job, status_code=201)
-def add_job(
-        job: job_schemas.JobCreate,
-        session: Session = Depends(get_session)):
-    """Add a new jobs and returns id"""
-
-    new_job = Job(**job.dict())
-    # I far from like passing down dependencies manually and creating
-    # unnecessary coupling.
-    return Repository.add_job(new_job, session)
-
-
-@app.put("/jobs/{job_id")
-def update_job(
-        job: job_schemas.Job,
-        job_id: int = Path(
-            ...,
-            title="The id of the job",
-            description="Some more information",
-            ge=1)):
-    """Updates the jobs with given job_id"""
-    return {"job_name": job.title, "job_id": job_id}
-
+app.include_router(routes.router)
 
 if __name__ == "__main__":
     print("STARTING UVICORN THROUGH main.py")
