@@ -20,8 +20,12 @@ project.
 * Adding new (development) packages will always give a ResolutionFailure 
 because of black being a pre-release package. Running `pipenv lock --pre`
 will create a proper lock file.
+* Go to backend/api
+* run pipenv install from here because that's where the Pipfile is.
+* Rebuild the API image if you're using the container as an interpreter in PyCharm
+```docker-compose up -d --no-deps --build api```
 
 ### Adding migrations
 When you have made changes to the models. Then add a migrations using the 
-docker container. Easiest way is to run 
-`docker-compose run api alembic revision --autogenerate -m "[Short title]"`
+docker container. Easiest way is to run (when container is running obviously)
+`docker-compose exec api alembic revision --autogenerate -m "[Short title]"`

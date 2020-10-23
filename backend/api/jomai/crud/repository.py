@@ -11,8 +11,12 @@ class Repository:
     #     self.session = session
 
     @staticmethod
-    def get_job(job_id: int, session: Session):
+    def get_job(job_id: int, session: Session) -> Job:
         return session.query(Job).filter(Job.id == job_id).first()
+
+    @staticmethod
+    def get_job_url(job_url: str, session: Session) -> Job:
+        return session.query(Job).filter(Job.url == job_url).first()
 
     @staticmethod
     def add_job(job: Job, session: Session):

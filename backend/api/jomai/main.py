@@ -1,11 +1,10 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, File
 from fastapi.middleware.cors import CORSMiddleware
 
 from jomai.api import routes
 
 app = FastAPI()
-
 origins = ["http://0.0.0.0:4200"]
 app.add_middleware(
     CORSMiddleware,
@@ -18,6 +17,12 @@ app.add_middleware(
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}
+
+
+@app.post("/files/")
+async def create_file(self, file: bytes = File(...)):
+    return {"file_size": len(file)}
+
 
 app.include_router(routes.router)
 

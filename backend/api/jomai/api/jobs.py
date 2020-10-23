@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi import APIRouter, Depends, HTTPException, Path, File, Form
 from sqlalchemy.orm import Session
 
 from jomai.crud.repository import Repository
 from jomai.db.session import get_session
 from jomai.models import Job
+from jomai.parsers.freelancenl import FreelanceNl
 from jomai.schemas import job as job_schemas
 
 router = APIRouter()
@@ -48,6 +49,42 @@ def update_job(
     return {"job_name": job.title, "job_id": job_id}
 
 
-@router.put("/flsearch")
-def upload_jobs():
-    pass
+@router.put("/flsearch/")
+def upload_jobs(file: bytes = File(..., title="Used keyword search results"),
+                keyword: str = Form(..., title="Used keyword"),
+                session: Session = Depends(get_session),
+                parser: FreelanceNl = Depends(FreelanceNl)
+                ):
+    """Updates or adds jobs from a search result"""
+    contents: str = file.decode("utf-8")
+    jobs = []
+    new = []
+    updated = []
+    processed = 0
+    for job in parser.parse_content(contents):
+        # find job (if found, update)
+        existing = Repository.get_job_url(job.url, session)
+        processed += 1
+        if existing:
+            if existing.has_changed(job):
+                # should validate if really changed?
+                # update with (new) values
+                existing.title = job.title
+                existing.applications = job.applications
+                existing.location = job.location
+                jobs.append(existing)
+                updated.append(job.url)
+        else:
+            # insert
+            # I don't want to commit on every result.
+            # so preferably I add a bulk update function.
+            jobs.append(job)
+            new.append(job.url)
+
+    response = {
+        "new": new,
+        "updated": updated,
+        "processed": processed,
+        "keyword": keyword
+    }
+    return response

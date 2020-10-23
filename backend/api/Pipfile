@@ -11,6 +11,7 @@ mypy = "*"
 pytest = "*"
 pytest-cov = "*"
 pre-commit = "*"
+parameterized = "*"
 
 [packages]
 fastapi = "*"
@@ -20,6 +21,8 @@ fastapi-sqlalchemy = "*"
 alembic = "*"
 psycopg2-binary = "*"
 sqlalchemy-stubs = "*"
+python-multipart = "*"
+beautifulsoup4 = "*"
 
 [requires]
 python_version = "3.8"
