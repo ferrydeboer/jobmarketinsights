@@ -28,12 +28,14 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
+    - task: Docker@1
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+        containerregistrytype: 'Azure Container Registry'
+        command: 'build'
+        dockerFile: '$(dockerFilePath)'
+        arguments: '--build-arg DEBUG=true'
+        imageName: '$(Build.Repository.Name):$(Build.BuildId)'
+    - task: CmdLine@2
+      inputs:
+        script: 'docker run $(Build.Repository.Name):$(Build.BuildId) python -m pytest'
+    
