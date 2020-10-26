@@ -39,8 +39,8 @@ stages:
     - task: CmdLine@2
       inputs:
         script: |
-          docker run --name jomai --rm $(Build.Repository.Name):$(Build.BuildId) python -m pytest
-          docker cp jomai:/usr/local/src/api/reports $(System.DefaultWorkingDirectory)
+          docker run --name jomai $(Build.Repository.Name):$(Build.BuildId) python -m pytest
+          docker cp jomai:/usr/local/src/api/reports/ $(System.DefaultWorkingDirectory)
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'XUnit'
