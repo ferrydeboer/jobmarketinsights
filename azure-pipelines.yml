@@ -37,5 +37,17 @@ stages:
         imageName: '$(Build.Repository.Name):$(Build.BuildId)'
     - task: CmdLine@2
       inputs:
-        script: 'docker run $(Build.Repository.Name):$(Build.BuildId) python -m pytest'
+        script: |
+          docker run $(Build.Repository.Name):$(Build.BuildId) python -m pytest
+          docker cp jt:usr/local/src/api/reports $(System.DefaultWorkingDirectory)
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'XUnit'
+        testResultsFiles: '**/xunit-result.xml'
+        failTaskOnFailedTests: true
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '**/coverage.xml'
+        pathToSources: '$(System.DefaultWorkingDirectory)/backend/api/jomai/'
     
