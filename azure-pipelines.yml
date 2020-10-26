@@ -44,7 +44,7 @@ stages:
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'XUnit'
-        testResultsFiles: '**/xunit-result.xml'
+        testResultsFiles: '**/testresults.xml'
         failTaskOnFailedTests: true
     - task: PublishCodeCoverageResults@1
       inputs:
