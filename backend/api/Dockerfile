@@ -9,8 +9,10 @@ ENV PROJECT_DIR /usr/local/src/api
 
 # Not needed in development.
 # COPY jomai ${PROJECT_DIR}/jomai
-COPY Pipfile* ${PROJECT_DIR}/
-COPY setup.cfg ${PROJECT_DIR}
+# COPY Pipfile* ${PROJECT_DIR}/
+# COPY setup.cfg ${PROJECT_DIR}
+# COPY all
+COPY . ${PROJECT_DIR}
 
 WORKDIR ${PROJECT_DIR}
 
@@ -19,6 +21,7 @@ ARG DEBUG=false
 RUN bash -c "if [ $DEBUG == 'true' ] ; then pipenv install --system --dev ; else pipenv install --system --deploy; fi"
 
 EXPOSE 8000
+
 
 #CMD ["sh", "-c", "tail -f /dev/null"]
 #ENTRYPOINT ["uvicorn", "jomai.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

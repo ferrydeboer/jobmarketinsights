@@ -21,7 +21,6 @@ services:
       networks:
         - jomai-net
       volumes:
-        - ./backend/api/jomai:/usr/local/src/api/jomai
         - web-data:/uploads
       depends_on:
         - db
