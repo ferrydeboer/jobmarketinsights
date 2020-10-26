@@ -34,3 +34,6 @@ class JobTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             other = Job(url="https://notmy.dream.job/0")
             self.original.has_changed(other)
+
+    def test_should_fail(self):
+        self.assert_(False, "This is intended to fail to see if tests tab appears")
