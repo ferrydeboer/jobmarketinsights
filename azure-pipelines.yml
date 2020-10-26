@@ -43,7 +43,7 @@ stages:
           docker cp jomai:/usr/local/src/api/reports/ $(System.DefaultWorkingDirectory)
     - task: PublishTestResults@2
       inputs:
-        testResultsFormat: 'XUnit'
+        testResultsFormat: 'JUnit'
         testResultsFiles: '**/xunit-result.xml'
         failTaskOnFailedTests: true
     - task: PublishCodeCoverageResults@1
