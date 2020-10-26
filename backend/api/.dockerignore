@@ -1,0 +1,4 @@
+.mypy_cache
+.pytest_cache
+__pychache__
+Dockerfile

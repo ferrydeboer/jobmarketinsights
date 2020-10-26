@@ -5,6 +5,8 @@ services:
       build:
         args:
           DEBUG: 'true'
+      volumes:
+        - ./backend/api/jomai:/usr/local/src/api/jomai
 
     pgadmin:
       container_name: pgadmin
